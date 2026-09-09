@@ -67,6 +67,12 @@ export default defineConfig({
 						{ label: 'CrowdSec Defense', slug: 'security/crowdsec' },
 					],
 				},
+				{
+					label: 'Meta & Contributing',
+					items: [
+						{ label: 'Contributing Guide', slug: 'meta/contributing' },
+					],
+				},
 			],
 		}),
 	],

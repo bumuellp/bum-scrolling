@@ -23,12 +23,14 @@ uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 ```
 
 ### Why Use Floating Major Tags (`@v1`) for Internal Actions?
+
 - **Automatic Patch Propagation**: Non-breaking bug fixes, security patches, and runner compatibility updates automatically apply to all caller repositories without opening pull requests across dozens of repositories.
 - **Contract Adherence**: Semantic Versioning guarantees that `@v1` never introduces breaking input/output changes (which belong in `@v2`).
 - **Low Maintenance Overhead**: Eliminates version churn across internal repositories while preserving stability.
 
 > [!TIP]
 > **The Dual Strategy**:
+>
 > - **Internal / Trusted Workflows**: Use floating major tags (`@v1`).
 > - **External Third-Party Marketplace Actions**: Pin to full 40-character commit SHAs with Dependabot/Renovate to defend against supply-chain account takeovers.
 
@@ -37,6 +39,7 @@ uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 ## 🎛️ Essential Workflow Patterns & Syntax
 
 ### 1. Granular Triggers & Path Filtering
+
 Avoid running expensive CI pipelines when only documentation or unrelated paths change:
 
 ```yaml
@@ -45,12 +48,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/**'
-      - 'pyproject.toml'
-      - '.github/workflows/ci.yml'
+      - "src/**"
+      - "pyproject.toml"
+      - ".github/workflows/ci.yml"
     paths-ignore:
-      - 'docs/**'
-      - '**.md'
+      - "docs/**"
+      - "**.md"
   pull_request:
     branches: [main]
   workflow_dispatch: # Enables manual trigger from GitHub UI
@@ -59,6 +62,7 @@ on:
 ---
 
 ### 2. Concurrency Control (Canceling Outdated Builds)
+
 Cancel redundant runs on rapid successive commits to save runner minutes:
 
 ```yaml
@@ -70,6 +74,7 @@ concurrency:
 ---
 
 ### 3. Least Privilege Permissions
+
 Always define an explicit root-level `permissions` block:
 
 ```yaml
@@ -90,6 +95,7 @@ jobs:
 ---
 
 ### 4. Matrix Builds & Fail-Fast
+
 Run tests across multiple operating systems and runtimes in parallel:
 
 ```yaml
@@ -100,9 +106,9 @@ jobs:
       fail-fast: false # Keep other matrix jobs running if one fails
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.11', '3.12']
+        python-version: ["3.11", "3.12"]
         include:
-          - python-version: '3.12'
+          - python-version: "3.12"
             experimental: true
     steps:
       - uses: actions/checkout@v7
@@ -115,6 +121,7 @@ jobs:
 ---
 
 ### 5. Reusable Workflows (`workflow_call`)
+
 Centrally define deployment or build logic that multiple repositories call:
 
 ```yaml
@@ -128,7 +135,7 @@ on:
         type: string
       node-version:
         required: false
-        default: '24'
+        default: "24"
         type: string
     secrets:
       DEPLOY_KEY:
@@ -143,18 +150,20 @@ jobs:
 ```
 
 **Calling the Reusable Workflow:**
+
 ```yaml
 jobs:
   call-deploy:
     uses: organization/shared-repo/.github/workflows/deploy.yml@v1
     with:
-      environment: 'production'
+      environment: "production"
     secrets: inherit # Automatically pass caller secrets
 ```
 
 ---
 
 ### 6. Composite Actions (`using: "composite"`)
+
 Bundle repetitive shell commands, tool installations, or scripts into a single reusable action step:
 
 ```yaml
@@ -183,6 +192,7 @@ runs:
 ---
 
 ### 7. Step Conditionals & Failure Handlers
+
 Inspect step outcomes and ensure cleanup steps execute even after failures:
 
 ```yaml

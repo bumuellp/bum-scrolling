@@ -39,14 +39,14 @@ exclude: "^(\\.venv|vendor|node_modules)/|.*\\.min\\.(js|css)$"
 repos: []
 ```
 
-| Key | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `minimum_pre_commit_version` | String | `0` | Enforces team-wide pre-commit CLI compatibility. |
-| `fail_fast` | Boolean | `false` | When `true`, halts execution on the first failing hook instead of running all checks. |
-| `default_stages` | List | `[pre-commit]` | Default stage(s) assigned to hooks unless overridden per-hook. |
-| `default_install_hook_types` | List | `[pre-commit]` | Git hook stages installed automatically by `pre-commit install` without requiring `--hook-type` flags. |
-| `exclude` | Regex | None | Global file path exclusion pattern applied across all hooks. |
-| `repos` | List | `[]` | List of remote git repositories or local hook definitions. |
+| Key                          | Type    | Default        | Description                                                                                            |
+| :--------------------------- | :------ | :------------- | :----------------------------------------------------------------------------------------------------- |
+| `minimum_pre_commit_version` | String  | `0`            | Enforces team-wide pre-commit CLI compatibility.                                                       |
+| `fail_fast`                  | Boolean | `false`        | When `true`, halts execution on the first failing hook instead of running all checks.                  |
+| `default_stages`             | List    | `[pre-commit]` | Default stage(s) assigned to hooks unless overridden per-hook.                                         |
+| `default_install_hook_types` | List    | `[pre-commit]` | Git hook stages installed automatically by `pre-commit install` without requiring `--hook-type` flags. |
+| `exclude`                    | Regex   | None           | Global file path exclusion pattern applied across all hooks.                                           |
+| `repos`                      | List    | `[]`           | List of remote git repositories or local hook definitions.                                             |
 
 ---
 
@@ -55,6 +55,7 @@ repos: []
 Each repository definition contains a `hooks` array with specific hook definitions. Below are the key configuration options available for individual hooks:
 
 ### 1. Passing CLI Arguments (`args`)
+
 The `args` parameter passes command-line options directly to the underlying CLI tool:
 
 ```yaml
@@ -79,6 +80,7 @@ The `args` parameter passes command-line options directly to the underlying CLI 
 ```
 
 ### 2. Targeting and Filtering Files (`files`, `exclude`, `types`)
+
 By default, hooks run only on files matching their built-in language filters. You can customize target files using regex patterns or file type tags:
 
 ```yaml
@@ -104,6 +106,7 @@ By default, hooks run only on files matching their built-in language filters. Yo
 ```
 
 ### 3. Installing Plugins & Dependencies (`additional_dependencies`)
+
 Hooks run inside isolated virtual environments. When a formatter or linter requires external plugins, declare them in `additional_dependencies`:
 
 ```yaml
@@ -119,6 +122,7 @@ Hooks run inside isolated virtual environments. When a formatter or linter requi
 ```
 
 ### 4. Hook Execution Stages (`stages`)
+
 Pre-commit hooks can bind to different Git lifecycle stages:
 
 ```yaml
@@ -139,6 +143,7 @@ Pre-commit hooks can bind to different Git lifecycle stages:
 ```
 
 ### 5. Whole-Repository & Test Execution (`pass_filenames`, `always_run`)
+
 Some hooks—such as test runners or compiler checks—must run on the whole repository rather than receiving a list of staged files:
 
 ```yaml
@@ -253,11 +258,12 @@ While GitHub Actions thrives on floating tags (`@v1`), `pre-commit` enforces the
   rev: v1.3.0
 ```
 
-### Why Mutable / Floating Tags Break Pre-Commit:
+### Why Mutable / Floating Tags Break Pre-Commit
+
 1. **Cache Keying & Desync**: `pre-commit` builds virtual environments under `~/.cache/pre-commit/` keyed strictly by `(repo_url, rev)`. If a floating tag (`v1`) moves on the remote:
    - Existing workstations will **never download the new changes** because their local cache for `v1` already exists.
    - New developer machines or clean CI runners will download the updated ref.
-   - Result: *"It passed on my workstation, but failed in CI."*
+   - Result: _"It passed on my workstation, but failed in CI."_
 2. **Deterministic Upgrades with `pre-commit autoupdate`**: `pre-commit autoupdate` queries the remote Git tags and cleanly bumps SemVer versions (`v1.2.0` $\to$ `v1.3.0`). Floating tags break this automation.
 3. **Execution Speed**: Avoids network round-trips to re-verify mutable Git branch heads on every local commit.
 
@@ -303,76 +309,86 @@ SKIP=trivy-fs git commit -m "chore: wip"
 Below is a curated selection of production-grade hooks categorized by domain, along with the specific repository from which each hook is sourced:
 
 ### 1. General File Hygiene & Whitespace
+
 **Repository**: [`https://github.com/pre-commit/pre-commit-hooks`](https://github.com/pre-commit/pre-commit-hooks)
 
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`trailing-whitespace`** | Strips invisible trailing whitespace from changed lines. | Essential across all text files to eliminate dirty diff noise. |
-| **`end-of-file-fixer`** | Ensures files terminate with a clean single trailing newline. | Prevents POSIX file parsing errors and Git `\ No newline at end of file` warnings. |
-| **`check-yaml`** | Validates YAML syntax across all `.yaml` and `.yml` files. | Catches indentation errors, malformed lists, and invalid keys before committing. |
-| **`mixed-line-ending`** | Normalizes all line breaks to Unix LF (`--fix=lf`). | Mandatory on cross-platform teams (Windows/Linux/macOS) to prevent CRLF corruption. |
+| Hook ID                   | Tool / Purpose                                                | When Useful                                                                         |
+| :------------------------ | :------------------------------------------------------------ | :---------------------------------------------------------------------------------- |
+| **`trailing-whitespace`** | Strips invisible trailing whitespace from changed lines.      | Essential across all text files to eliminate dirty diff noise.                      |
+| **`end-of-file-fixer`**   | Ensures files terminate with a clean single trailing newline. | Prevents POSIX file parsing errors and Git `\ No newline at end of file` warnings.  |
+| **`check-yaml`**          | Validates YAML syntax across all `.yaml` and `.yml` files.    | Catches indentation errors, malformed lists, and invalid keys before committing.    |
+| **`mixed-line-ending`**   | Normalizes all line breaks to Unix LF (`--fix=lf`).           | Mandatory on cross-platform teams (Windows/Linux/macOS) to prevent CRLF corruption. |
 
 ---
 
 ### 2. GitHub Actions & Workflow Schema Validation
+
 **Repository**: [`https://github.com/python-jsonschema/check-jsonschema`](https://github.com/python-jsonschema/check-jsonschema)
 
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
+| Hook ID                      | Tool / Purpose                                                               | When Useful                                                                                                                       |
+| :--------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
 | **`check-github-workflows`** | Validates `.github/workflows/*.yml` against official GitHub OpenAPI schemas. | Crucial for catching syntax errors, invalid event triggers, and missing required inputs locally before triggering failed CI runs. |
-| **`check-github-actions`** | Validates `action.yml` composite action metadata schemas. | Ensures action inputs, outputs, and `runs.using` syntax comply with GitHub Actions specifications. |
+| **`check-github-actions`**   | Validates `action.yml` composite action metadata schemas.                    | Ensures action inputs, outputs, and `runs.using` syntax comply with GitHub Actions specifications.                                |
 
 ---
 
 ### 3. Python Linting & Formatting
+
 **Repository**: [`https://github.com/astral-sh/ruff-pre-commit`](https://github.com/astral-sh/ruff-pre-commit)
 
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`ruff`** | Ultra-fast Python linter (`select = ["E", "F", "W", "I", "UP", "B"]`) with automatic `--fix`. | Replaces Flake8, isort, and pyupgrade in sub-millisecond execution times. |
-| **`ruff-format`** | Deterministic Python code formatter. | Guarantees clean, standardized Python formatting (replaces Black) across scripts and test suites. |
+| Hook ID           | Tool / Purpose                                                                                | When Useful                                                                                       |
+| :---------------- | :-------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| **`ruff`**        | Ultra-fast Python linter (`select = ["E", "F", "W", "I", "UP", "B"]`) with automatic `--fix`. | Replaces Flake8, isort, and pyupgrade in sub-millisecond execution times.                         |
+| **`ruff-format`** | Deterministic Python code formatter.                                                          | Guarantees clean, standardized Python formatting (replaces Black) across scripts and test suites. |
 
 ---
 
 ### 4. Documentation & Web Assets
+
 **Repositories**:
+
 - Prettier: [`https://github.com/pre-commit/mirrors-prettier`](https://github.com/pre-commit/mirrors-prettier)
 - Markdownlint: [`https://github.com/DavidAnson/markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2)
 
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`prettier`** | Formatter for Markdown, YAML, and JSON. | Ensures documentation, frontmatter, and configuration files maintain clean, consistent formatting. |
+| Hook ID                 | Tool / Purpose                                              | When Useful                                                                                                        |
+| :---------------------- | :---------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| **`prettier`**          | Formatter for Markdown, YAML, and JSON.                     | Ensures documentation, frontmatter, and configuration files maintain clean, consistent formatting.                 |
 | **`markdownlint-cli2`** | Fast linter for Markdown syntax and structural correctness. | Catches unquoted YAML colons, invalid heading levels, broken list spacing, and malformed tables in technical docs. |
 
 ---
 
 ### 5. Modular Security, Quality, Testing & Git Governance Hooks
+
 **Repository**: [`https://github.com/bumuellp/cabumtain-hook`](https://github.com/bumuellp/cabumtain-hook)
 
 A collection of pre-commit, commit-msg, and pre-push hooks covering security, shell, Kubernetes, testing, and release integrity:
 
 #### Shell & Infrastructure
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`shell-lint`** | Formats scripts with `shfmt` and lints shell scripts with `shellcheck`. | Catches unquoted variables, subshell bugs, missing shebangs, and non-POSIX constructs in Bash/sh scripts. |
-| **`yaml-xml-lint`** | Lints YAML with `yamllint` and validates XML schemas. | Enforces strict document structure while automatically skipping SOPS-encrypted secrets (`*.enc.yml`). |
-| **`k8s-validate`** | Validates Kubernetes manifests with Kustomize, Kubeconform, and Kube-score. | Validates Kubernetes YAML for OpenAPI schema compliance, missing security contexts, and container best practices before push. |
+
+| Hook ID             | Tool / Purpose                                                              | When Useful                                                                                                                   |
+| :------------------ | :-------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| **`shell-lint`**    | Formats scripts with `shfmt` and lints shell scripts with `shellcheck`.     | Catches unquoted variables, subshell bugs, missing shebangs, and non-POSIX constructs in Bash/sh scripts.                     |
+| **`yaml-xml-lint`** | Lints YAML with `yamllint` and validates XML schemas.                       | Enforces strict document structure while automatically skipping SOPS-encrypted secrets (`*.enc.yml`).                         |
+| **`k8s-validate`**  | Validates Kubernetes manifests with Kustomize, Kubeconform, and Kube-score. | Validates Kubernetes YAML for OpenAPI schema compliance, missing security contexts, and container best practices before push. |
 
 #### Automated Testing & Unit Verification
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
+
+| Hook ID            | Tool / Purpose                                                                                           | When Useful                                                                                                                 |
+| :----------------- | :------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
 | **`python-tests`** | Automatically discovers and executes `pytest` or `unittest` suites when a `tests/` directory is present. | Shift-left testing ensuring unit tests pass before a commit is created. Supports local `uv`, virtualenvs, or system python. |
 
 #### Security, Secrets & Vulnerability Auditing
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`secret-scan`** | Deep credential and token scanning using TruffleHog. | Blocks commits containing accidental leaks of private keys, AWS tokens, GitHub PATs, and database passwords. |
-| **`trivy-config`** | Scans Dockerfiles, Kubernetes manifests, and IaC definitions for security misconfigurations. | Prevents running containers as root, missing security contexts, and insecure port exposures. |
-| **`trivy-fs`** | Scans source code and lockfiles for known CVEs, license compliance, and leaked secrets (`--severity HIGH,CRITICAL`). | Blocks introduction of packages with known high-severity vulnerabilities or non-compliant licenses. |
+
+| Hook ID            | Tool / Purpose                                                                                                       | When Useful                                                                                                  |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| **`secret-scan`**  | Deep credential and token scanning using TruffleHog.                                                                 | Blocks commits containing accidental leaks of private keys, AWS tokens, GitHub PATs, and database passwords. |
+| **`trivy-config`** | Scans Dockerfiles, Kubernetes manifests, and IaC definitions for security misconfigurations.                         | Prevents running containers as root, missing security contexts, and insecure port exposures.                 |
+| **`trivy-fs`**     | Scans source code and lockfiles for known CVEs, license compliance, and leaked secrets (`--severity HIGH,CRITICAL`). | Blocks introduction of packages with known high-severity vulnerabilities or non-compliant licenses.          |
 
 #### Git Governance & Release Protection (Pre-Push & Commit-Msg)
-| Hook ID | Tool / Purpose | When Useful |
-| :--- | :--- | :--- |
-| **`commit-msg`** | Validates Conventional Commits syntax (`feat`, `fix`, `docs`, `chore`, `refactor`) with a 72-character header limit. | Enforces standardized commit history required for automated Semantic Version release calculations. |
-| **`tag-immutability-guard`** | Pre-push hook preventing force-pushes or rewrites to existing release tags (`v*.*.*`). | Protects downstream consumers from supply-chain drift and breaking changes on immutable release tags. |
-| **`act-integration-test`** | Executes local GitHub Actions workflows using `act` and Docker prior to pushing. | Verifies composite action integrations and workflow logic locally without waiting for cloud CI queues. |
+
+| Hook ID                      | Tool / Purpose                                                                                                       | When Useful                                                                                            |
+| :--------------------------- | :------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| **`commit-msg`**             | Validates Conventional Commits syntax (`feat`, `fix`, `docs`, `chore`, `refactor`) with a 72-character header limit. | Enforces standardized commit history required for automated Semantic Version release calculations.     |
+| **`tag-immutability-guard`** | Pre-push hook preventing force-pushes or rewrites to existing release tags (`v*.*.*`).                               | Protects downstream consumers from supply-chain drift and breaking changes on immutable release tags.  |
+| **`act-integration-test`**   | Executes local GitHub Actions workflows using `act` and Docker prior to pushing.                                     | Verifies composite action integrations and workflow logic locally without waiting for cloud CI queues. |
