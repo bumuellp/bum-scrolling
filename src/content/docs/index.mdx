@@ -1,0 +1,37 @@
+---
+title: Welcome to Bum Scrolling
+description: Central knowledge base, cheat-sheets, and homelab architecture documentation.
+template: splash
+hero:
+  tagline: Production-hardened infrastructure, container collections, automated CI actions, and engineering cheat-sheets.
+  actions:
+    - text: Explore Ecosystem
+      link: /bum-scrolling/architecture/ecosystem/
+      icon: right-arrow
+      variant: primary
+    - text: Browse Cheat-Sheets
+      link: /bum-scrolling/cheat-sheets/git/
+      icon: external
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## Core Architecture Repositories
+
+<CardGrid stagger>
+  <Card title="bum-in-a-box" icon="package">
+    Curated, zero-CVE container images for AI agent stacks, Vulkan LLM gateways
+    (`llama-proxy`), MCP bridges (`mcpo`), and DevOps tools (`lint-tools`).
+    [View Repository](https://github.com/bumuellp/bum-in-a-box)
+  </Card>
+  <Card title="lights-camera-bum-action" icon="setting">
+    Reusable GitHub Actions suite for automated SemVer bumping, GHCR retention
+    cleanup, pre-commit CI execution, and remote deployment. [View
+    Repository](https://github.com/bumuellp/lights-camera-bum-action)
+  </Card>
+  <Card title="cabumtain-hook" icon="shield">
+    Modular Git hooks collection featuring Tag Immutability Guards, Conventional
+    Commits validation, local `act` integration tests, and security scans. [View
+    Repository](https://github.com/bumuellp/cabumtain-hook)
+  </Card>
+</CardGrid>

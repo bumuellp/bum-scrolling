@@ -1,0 +1,26 @@
+{
+  "name": "bum-scrolling",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Public notes, cheat sheets, and homelab architecture documentation portal",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "astro check"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.0",
+    "astro": "^7.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "prettier": "^3.9.6",
+    "sharp": "^0.35.4",
+    "typescript": "^6.0.3"
+  }
+}
