@@ -132,7 +132,7 @@ flowchart LR
 
 ```bash
 # Inside bum-in-a-box repository:
-./scripts/release.sh v1.0.2
+./scripts/release.sh v1.0.3
 ```
 
 This helper:
@@ -150,15 +150,15 @@ For repositories without a custom release script, tag using Git and GitHub CLI:
 
 ```bash
 # 1. Create an annotated release tag (immutable)
-git tag -a v1.0.2 -m "Release v1.0.2"
-git push origin v1.0.2
+git tag -a v1.3.0 -m "Release v1.3.0"
+git push origin v1.3.0
 
 # 2. Fast-forward floating major tag (v1) to track latest release
 git tag -f -a v1 -m "Release v1"
 git push -f origin v1
 
 # 3. (Optional) Publish GitHub Release via CLI
-gh release create v1.0.2 --title "v1.0.2" --generate-notes
+gh release create v1.3.0 --title "v1.3.0" --generate-notes
 ```
 
 ---

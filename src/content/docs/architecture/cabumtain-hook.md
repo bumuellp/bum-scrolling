@@ -29,14 +29,15 @@ description: Modular pre-commit and pre-push hook collection for security, linti
 ```yaml
 repos:
   - repo: https://github.com/bumuellp/cabumtain-hook
-    rev: v1.0.2
+    rev: v1.3.0
     hooks:
       - id: commit-msg
       - id: secret-scan
       - id: shell-lint
       - id: yaml-xml-lint
       - id: python-tests
-      - id: trivy-security
+      - id: trivy-config
+      - id: trivy-fs
       - id: tag-immutability-guard
       - id: act-integration-test
 ```
