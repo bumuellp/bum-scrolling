@@ -110,8 +110,10 @@ Add interface-scoped forward rules in `/etc/ufw/before.rules` right before the `
 # Allow Flannel VXLAN overlay port (inter-node pod communication)
 sudo ufw allow 8472/udp
 
-# Allow Kubernetes API server access from trusted management subnet
-sudo ufw allow from 10.0.0.0/24 to any port 6443 proto tcp
+# Hardened API Access: Never expose port 6443 publicly (0.0.0.0/0).
+# Allow Kubernetes API server ONLY over the private WireGuard mesh (wg0) or trusted node-to-node subnet:
+sudo ufw allow in on wg0 to any port 6443 proto tcp
+sudo ufw allow from 10.10.0.0/24 to any port 6443 proto tcp
 
 # Allow Kubelet metrics / health endpoints within cluster subnet
 sudo ufw allow from 10.0.0.0/24 to any port 10250 proto tcp

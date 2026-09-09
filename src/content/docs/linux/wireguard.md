@@ -93,6 +93,12 @@ net.ipv6.conf.eth0.forwarding = 1
 net.ipv6.conf.eth0.accept_ra = 2
 ```
 
+##### 💡 Why is enabling forwarding on `eth0` necessary and safe here?
+
+- **Directional Routing Requirement**: In Linux, packet forwarding between two interfaces requires forwarding to be enabled on **both** the ingress and egress interfaces. VPN client traffic arrives on `wg0` and exits out onto `eth0` toward the internet or local LAN; return traffic arrives on `eth0` and exits back through `wg0`.
+- **Isolation Guarantee**: Unlike global `ip_forward = 1` (which exposes _all_ current and future network interfaces—including `docker0`, secondary NICs `eth1`, and VM bridges `virbr0`), interface-scoped sysctl restricts forwarding **strictly and exclusively** to the `wg0 <-> eth0` path. All other interfaces remain isolated (`forwarding = 0`).
+- **Firewall Enforcement**: In conjunction with stateful `iptables` hooks in `PostUp`, only traffic originating from the authenticated WireGuard interface (`-i %i`) or established return streams are passed.
+
 Apply without rebooting:
 
 ```bash
@@ -113,3 +119,36 @@ PrivateKey = <server-private-key>
 PostUp = iptables -A FORWARD -i %i -o eth0 -j ACCEPT; iptables -A FORWARD -i eth0 -o %i -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -o eth0 -j ACCEPT; iptables -D FORWARD -i eth0 -o %i -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
+
+---
+
+## 🛡️ Control Plane Hardening: Kubernetes API & WireGuard Isolation
+
+> [!CAUTION]
+> **Severe Security Hazard: Exposing Kubernetes API (6443/tcp) to the Public Internet**
+> Binding or opening the Kubernetes API server directly to the public internet (`0.0.0.0:6443`) exposes the entire cluster control plane to automated credential brute-forcing, denial-of-service floods, and unauthenticated API vulnerability exploits.
+
+### Best Practice: Node-to-Node & Admin Mesh Isolation
+
+Never expose port 6443 on public interfaces (`eth0`). Instead, isolate the control plane entirely within your private WireGuard mesh:
+
+1. **Bind API Server to WireGuard IP**:
+   Configure K3s, RKE2, or kubeadm to advertise and bind exclusively to the node's WireGuard mesh address (e.g. `10.10.0.1`):
+
+   ```bash
+   # Example K3s server flag:
+   k3s server --bind-address=10.10.0.1 --advertise-address=10.10.0.1 --node-ip=10.10.0.1
+   ```
+
+2. **Restrict Firewall Access to WireGuard Interface**:
+   On hosts running UFW, ensure port 6443 only accepts inbound traffic from the WireGuard tunnel:
+
+   ```bash
+   # Allow API access ONLY through the encrypted WireGuard tunnel
+   sudo ufw allow in on wg0 to any port 6443 proto tcp
+
+   # Explicitly block or drop any external attempts on physical interfaces
+   sudo ufw deny in on eth0 to any port 6443 proto tcp
+   ```
+
+   All cluster worker nodes and administrator workstations communicate with the control plane through mutual, cryptographically verified WireGuard tunnels without exposing port 6443 to the WAN.

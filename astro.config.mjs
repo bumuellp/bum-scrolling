@@ -55,6 +55,8 @@ export default defineConfig({
 					label: 'Developer Tooling',
 					items: [
 						{ label: 'GitHub CLI (gh)', slug: 'tools/gh' },
+						{ label: 'GitHub Actions CI/CD', slug: 'tools/github-actions' },
+						{ label: 'Pre-Commit Framework', slug: 'tools/pre-commit' },
 						{ label: 'Ansible Automation', slug: 'tools/ansible' },
 						{ label: 'llama.cpp Inference', slug: 'tools/llama' },
 					],

@@ -28,17 +28,24 @@ description: Comprehensive reference for llama.cpp flags, speculative decoding, 
 
 ### Speculative Decoding & Multi-Token Prediction (MTP)
 
-| Flag                     | Long Flag            | Description                                              | Values / Examples                 |
-| :----------------------- | :------------------- | :------------------------------------------------------- | :-------------------------------- |
-| **`-md`**                | `--model-draft`      | Path to smaller draft model for speculative decoding.    | `/models/draft-model.gguf`        |
-| **`--spec-type`**        | `--spec-type`        | Speculative decoding algorithm / mode.                   | `draft`, `draft-mtp`, `ngram-mod` |
-| **`--spec-draft-n-max`** | `--spec-draft-n-max` | Maximum number of draft tokens predicted ahead per step. | `4` to `16`                       |
+| Flag                     | Long Flag            | Description                                                                                                               | Values / Examples                 |
+| :----------------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------------------- |
+| **`-md`**                | `--model-draft`      | Path to draft model file (required for `draft`; for `draft-mtp`, required when MTP weights are in an external GGUF file). | `/models/draft-model.gguf`        |
+| **`--spec-type`**        | `--spec-type`        | Speculative decoding algorithm / mode.                                                                                    | `draft`, `draft-mtp`, `ngram-mod` |
+| **`--spec-draft-n-max`** | `--spec-draft-n-max` | Maximum number of draft tokens predicted ahead per step.                                                                  | `3` to `8`                        |
+| **`--spec-draft-p-min`** | `--spec-draft-p-min` | Minimum probability threshold required to continue speculative drafting.                                                  | `0.7` to `0.9` (e.g. `0.8`)       |
 
 #### Speculative Decoding Modes (`--spec-type`)
 
-- **`draft`**: Classic speculative decoding using an external, smaller draft model (`-md`) sharing the same tokenizer. The draft model predicts candidates, and the primary model verifies them in parallel in one forward pass.
-- **`draft-mtp`**: Multi-Token Prediction decoding for models pre-trained with dedicated MTP heads (e.g. DeepSeek-V3 / DeepSeek-R1). Speculates subsequent tokens natively without a secondary model file.
-- **`ngram-mod`**: Zero-overhead prompt n-gram matching. Derives token candidates from repeating patterns directly within past context. Requires no draft weights and speeds up code editing and structured JSON generation.
+- **`draft` (Always requires `-md`)**: Classic speculative decoding using an external, smaller standalone draft model (`-md <draft.gguf>`) sharing the same tokenizer vocabulary. The draft model generates token candidates, and the primary model verifies them in parallel in one forward pass.
+- **`draft-mtp` (Multi-Token Prediction)**: Accelerates inference using dedicated MTP prediction heads trained to predict multiple tokens ahead.
+  - **With Separate MTP File (`-md`)**: When the MTP prediction layers are distributed as a separate auxiliary GGUF file (common in many DeepSeek-V3 / DeepSeek-R1 quantizations), you must explicitly supply it with `-md /path/to/model-mtp.gguf --spec-type draft-mtp`.
+  - **With Pre-Merged Weights**: When the primary model GGUF already has the MTP NextN tensors baked directly inside, `--spec-type draft-mtp` works directly without an external `-md`.
+- **`ngram-mod` (Zero Overhead, No `-md`)**: Extracts n-gram sequence matches directly from past prompt context to predict subsequent tokens. Requires zero additional weights or files, providing instant acceleration for repetitive code editing, boilerplate, and structured JSON output.
+
+#### Speculative Confidence Filtering (`--spec-draft-p-min`)
+
+- **`--spec-draft-p-min <P>`** sets an acceptance confidence cutoff (e.g., `0.8`). If the drafting head or draft model predicts a token with confidence below `P`, speculative drafting halts immediately for that step. This prevents the model from wasting memory bandwidth and compute verifying low-confidence guesses on novel, creative, or unpredictable text.
 
 ---
 
