@@ -4,17 +4,59 @@ Thank you for contributing to **Bum Scrolling**! This project serves as an **Eng
 
 ---
 
-## 🧭 Content Framework: Diátaxis Architecture
+## 🧭 Content Framework: Canonical Hybrid Diátaxis
 
-To ensure documentation remains structured, predictable, and maintainable, every page in this repository maps to one of three primary **Diátaxis** archetypes:
+To balance **clean separation of concerns** with **practical engineer workflows**, we adopt the **Canonical Hybrid Model** (the approach used by Canonical/Ubuntu and modern documentation portals).
 
-| Archetype | Directory / Scope | Purpose | Template |
-| :--- | :--- | :--- | :--- |
-| **Reference / Cheat Sheet** | `src/content/docs/cheat-sheets/`<br>`src/content/docs/tools/` | Fast command lookups, syntax summaries, and tabular flags. Objective and concise. | [reference-cheatsheet.md](.github/page-templates/reference-cheatsheet.md) |
-| **How-To / Runbook** | `src/content/docs/linux/`<br>`src/content/docs/security/` | Step-by-step procedures to achieve a specific operational outcome or mitigate incidents. | [how-to-runbook.md](.github/page-templates/how-to-runbook.md) |
-| **Architecture / Explanation** | `src/content/docs/architecture/` | Design philosophy, system topologies, decision trade-offs, and ecosystem context. | [architecture-explanation.md](.github/page-templates/architecture-explanation.md) |
+Content is categorized along two orthogonal axes:
 
-When contributing a new document, copy the appropriate template from [`.github/page-templates/`](.github/page-templates/) into the corresponding directory.
+1. **Thematic Domains (Filesystem)**: Organized by capability under `src/content/docs/<domain>/`.
+2. **Diátaxis Archetypes (Navigation)**: Explicitly badged in the sidebar.
+
+### Compact Archetype Comparison Matrix
+
+| Archetype & Badge                    | User State                                                       | Orientation & Tone                                                    | Core Elements                                                            | Code Role                                                | Template                                                                            |
+| :----------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------- | :----------------------------------------------------------------------- | :------------------------------------------------------- | :---------------------------------------------------------------------------------- |
+| **`[Cheat Sheet]`**<br>`badge: note` | Mid-operation; needs syntax, flag, or command immediately.       | **Information-oriented**<br>Austere, factual, tabular, low-narrative. | Command matrices, parameter tables, flag options, gotchas.               | Direct copy-paste commands and CLI patterns.             | [`reference-cheatsheet.md`](.github/page-templates/reference-cheatsheet.md)         |
+| **`[Runbook]`**<br>`badge: success`  | Faced with a specific task, deployment, or operational incident. | **Task-oriented**<br>Prescriptive, sequential, outcome-driven.        | Prerequisites checklist, numbered steps, health checks, troubleshooting. | Execution commands, configuration blocks, test commands. | [`how-to-runbook.md`](.github/page-templates/how-to-runbook.md)                     |
+| **`[Architecture]`**<br>`badge: tip` | Evaluating system design, trade-offs, or component boundaries.   | **Understanding-oriented**<br>Discursive, conceptual, big-picture.    | Topologies, responsibility tables, design trade-offs, dependencies.      | Illustrative schemas, state models, protocol contracts.  | [`architecture-explanation.md`](.github/page-templates/architecture-explanation.md) |
+
+### Thematic Domain Organization (Generic)
+
+Directories under `src/content/docs/` correspond to technological capabilities (e.g. `containers/`, `linux/`, `tools/`, `security/`, `architecture/`). Contributors can introduce new capability areas (such as `networking/` or `observability/`) as the infrastructure evolves, registering them in [`astro.config.mjs`](astro.config.mjs).
+
+---
+
+## 🔗 The 3-Tier Synergy Linking Standard
+
+To eliminate content duplication and keep cheat sheets lean without stranding users, all pages adhere to a 3-tier cross-linking pattern:
+
+1. **Tier 1 — Top 1-Line Pivot Bar**:
+   Immediately beneath the frontmatter, provide a compact link row to counterpart guides for 0-second bounce recovery:
+
+   ```markdown
+   > 🔗 **Related**: [Runbook: Operational Setup](../path/to/runbook.md) · [Architecture: System Design](../path/to/architecture.md)
+   ```
+
+2. **Tier 2 — In-Body Collapsible Disclosures (`<details><summary>`)**:
+   Avoid bloating cheat sheets with extensive theory or verbose troubleshooting. Use native HTML disclosures or Starlight `collapse={...}` code blocks to make deep context available on-demand without slowing down visual scanning.
+3. **Tier 3 — Bottom Related Documentation Section**:
+   End every document with a standardized `## 🔗 Related Documentation & Context` heading. This automatically populates Starlight's right-hand **"On this page"** TOC on desktop.
+
+---
+
+## 📋 Page Templates
+
+When contributing new content, copy the corresponding template from [`.github/page-templates/`](.github/page-templates/):
+
+| Template                       | File                                                                                | When to Use                                                                     |
+| :----------------------------- | :---------------------------------------------------------------------------------- | :------------------------------------------------------------------------------ |
+| **Reference / Cheat Sheet**    | [`reference-cheatsheet.md`](.github/page-templates/reference-cheatsheet.md)         | High-density command matrices, syntax tables, and CLI patterns.                 |
+| **Operational Runbook**        | [`how-to-runbook.md`](.github/page-templates/how-to-runbook.md)                     | Step-by-step procedures with prerequisites, health checks, and fixes.           |
+| **Architecture & Explanation** | [`architecture-explanation.md`](.github/page-templates/architecture-explanation.md) | System design, component boundaries, trade-offs, and illustrative code schemas. |
+
+> [!TIP]
+> Foundational code snippets, configuration schemas, and data structures are **actively encouraged** in Architecture documents to concretely demonstrate contracts and system mechanics.
 
 ---
 
@@ -23,11 +65,13 @@ When contributing a new document, copy the appropriate template from [`.github/p
 This portal is built using [Astro Starlight](https://starlight.astro.build/).
 
 ### 1. Prerequisites
+
 - **Node.js**: v20 or v24 LTS (defined in `.node-version`)
 - **Package Manager**: npm
 - **Python / UV**: For running `pre-commit` hooks locally
 
 ### 2. Setup & Preview
+
 ```bash
 # Clone the repository
 git clone https://github.com/bumuellp/bum-scrolling.git
@@ -53,18 +97,22 @@ npm run preview
 All contributions must pass automated pre-commit linters and security checks before submission.
 
 ### 1. Install Pre-Commit Hooks
+
 ```bash
 # Install git hooks into local .git/hooks directory
 uvx pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push
 ```
 
 ### 2. Manual Verification
+
 Before creating a pull request, run all linters across all tracked files:
+
 ```bash
 uvx pre-commit run --all-files
 ```
 
 The pre-commit pipeline verifies:
+
 - **Markdown & Formatting**: `prettier` and `markdownlint-cli2`.
 - **YAML & Workflows**: `check-yaml` and `check-github-workflows`.
 - **Secrets Scanning**: `secret-scan` (TruffleHog) to prevent leaked tokens and keys.
@@ -76,6 +124,7 @@ The pre-commit pipeline verifies:
 ## 📜 Git & Commit Standards
 
 ### 1. Conventional Commits
+
 All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
 ```text
@@ -90,6 +139,7 @@ All commits must follow the [Conventional Commits](https://www.conventionalcommi
   - `docs(tools): update ruff pre-commit flags`
 
 ### 2. Branching & PRs
+
 - Branch from `main` using descriptive names: `feat/wireguard-mesh`, `fix/selinux-typo`.
 - Open a Pull Request against `main`. Ensure all automated CI checks pass.
 
@@ -115,13 +165,13 @@ Whenever you create a new documentation page under `src/content/docs/`, register
 sidebar: [
   // ...
   {
-    label: 'Developer Tooling',
+    label: "Developer Tooling",
     items: [
       // Add your new page slug (relative to src/content/docs without .md extension)
-      { label: 'My New Tool', slug: 'tools/my-new-tool' },
+      { label: "My New Tool", slug: "tools/my-new-tool" },
     ],
   },
-]
+];
 ```
 
 ---

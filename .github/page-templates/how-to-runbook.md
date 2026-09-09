@@ -9,6 +9,8 @@ Target Audience: Practitioners executing a concrete operational task or solving 
 Tone: Prescriptive, sequential, action-driven, outcome-focused.
 -->
 
+> 🔗 **Related**: [Cheat Sheet: Quick Reference](../path/to/cheatsheet.md) · [Architecture: System Topology](../path/to/architecture.md)
+
 [1-2 sentences stating exactly what operational goal this runbook accomplishes and the target environment].
 
 ---
@@ -48,6 +50,20 @@ service:
     level: "info"
 ```
 
+<details>
+<summary>Alternative Configuration: [Advanced or Edge-Case Setup]</summary>
+
+If deploying in a high-availability cluster or behind an existing reverse proxy, use this alternative configuration:
+
+```yaml
+service:
+  interface: "127.0.0.1"
+  cluster:
+    peer: "10.10.0.2:8080"
+```
+
+</details>
+
 ### Step 3: [Initialize or Reload Service]
 
 ```bash
@@ -80,15 +96,19 @@ curl -fsSL http://localhost:8080/healthz
 ### Common Failure Modes
 
 #### Issue: [Symptom Name, e.g. Port Binding Failed]
+
 - **Cause**: [Root cause explanation, e.g. Port already allocated by another daemon].
 - **Remedy**:
+
   ```bash
   sudo lsof -i :8080
   ```
 
 #### Issue: [Symptom Name, e.g. Permission Denied]
+
 - **Cause**: [Root cause explanation, e.g. SELinux context or file ownership mismatch].
 - **Remedy**:
+
   ```bash
   sudo chown -R service-user:service-group /var/lib/service
   ```
@@ -98,5 +118,13 @@ curl -fsSL http://localhost:8080/healthz
 ## 🛡️ Security Hardening Checklist
 
 > [!IMPORTANT]
+>
 > - Never expose unauthenticated admin or debug ports to WAN interfaces.
 > - Ensure sensitive configuration files are restricted (`chmod 600`).
+
+---
+
+## 🔗 Related Documentation & Context
+
+- **Cheat Sheet**: [CLI Command Reference](../path/to/cheatsheet.md) — Rapid lookups for flags and everyday commands.
+- **Architecture**: [Topology & Rationale](../path/to/architecture.md) — System models, failure modes, and architectural trade-offs.

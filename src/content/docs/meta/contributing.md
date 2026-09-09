@@ -7,39 +7,53 @@ Welcome to the **Bum Scrolling** authoring and contribution guide! This portal s
 
 ---
 
-## 🧭 Documentation Architecture: The Diátaxis Framework
+## 🧭 Documentation Architecture: The Canonical Hybrid Model
 
-To maintain consistency and high utility across hundreds of documents, we adopt the [Diátaxis framework](https://diataxis.fr/). Every document in this portal serves a specific user need and belongs to one of three primary archetypes:
+To balance **clean separation of concerns** with **real-world engineering workflows**, we adopt the **Canonical Hybrid Model** (pioneered by Canonical/Ubuntu and modern cloud-native portals).
 
-```
-                      PRACTICAL / WORK-ORIENTED
-                                 │
-           How-To Guides         │         Reference / Cheat Sheets
-           (Operational Steps)   │         (Facts & Commands)
-      ───────────────────────────┼───────────────────────────
-           Architecture          │         Tutorials
-           (System Explanations) │         (Learning Journeys)
-                                 │
-                     THEORETICAL / STUDY-ORIENTED
-```
+Content is categorized along two orthogonal axes:
 
-### 1. Reference & Cheat Sheets (`cheat-sheets/`, `tools/`)
-- **User State**: In the middle of an operation, needs a command flag, syntax structure, or API endpoint immediately.
-- **Orientation**: Information-oriented.
-- **Tone**: Austere, factual, scannable, low-narrative.
-- **Core Elements**: Fast command snippets, comparison tables, flag matrices, and gotcha callouts.
+1. **Thematic Domains (Filesystem)**: Grouped by technology or capability area (`src/content/docs/<domain>/`).
+2. **Diátaxis Archetypes (Navigation)**: Explicitly indicated in the sidebar with Starlight badges.
 
-### 2. Operational Runbooks & How-To Guides (`linux/`, `security/`)
-- **User State**: Faced with a real-world task or operational goal (e.g. configuring a WireGuard mesh or hardening SSH).
-- **Orientation**: Task-oriented.
-- **Tone**: Prescriptive, sequential, outcome-driven.
-- **Core Elements**: Prerequisites checklist, numbered execution steps, explicit verification commands, and troubleshooting remedies.
+### Compact Archetype Comparison Matrix
 
-### 3. Architecture & System Explanations (`architecture/`)
-- **User State**: Studying the system design, evaluating design trade-offs, or understanding how components interact.
-- **Orientation**: Understanding-oriented.
-- **Tone**: Discursive, conceptual, big-picture.
-- **Core Elements**: ASCII/Mermaid topologies, component responsibility tables, architectural trade-offs, and dependency maps.
+| Archetype & Badge                    | User State                                                       | Orientation & Tone                                                    | Core Elements                                                            | Code Role                                                | Template                                                                                                                                |
+| :----------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------- | :----------------------------------------------------------------------- | :------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| **`[Cheat Sheet]`**<br>`badge: note` | Mid-operation; needs syntax, flag, or command immediately.       | **Information-oriented**<br>Austere, factual, tabular, low-narrative. | Command matrices, parameter tables, flag options, gotchas.               | Direct copy-paste commands and CLI patterns.             | [`reference-cheatsheet.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/reference-cheatsheet.md)         |
+| **`[Runbook]`**<br>`badge: success`  | Faced with a specific task, deployment, or operational incident. | **Task-oriented**<br>Prescriptive, sequential, outcome-driven.        | Prerequisites checklist, numbered steps, health checks, troubleshooting. | Execution commands, configuration blocks, test commands. | [`how-to-runbook.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/how-to-runbook.md)                     |
+| **`[Architecture]`**<br>`badge: tip` | Evaluating system design, trade-offs, or component boundaries.   | **Understanding-oriented**<br>Discursive, conceptual, big-picture.    | Topologies, responsibility tables, design trade-offs, dependencies.      | Illustrative schemas, state models, protocol contracts.  | [`architecture-explanation.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/architecture-explanation.md) |
+
+---
+
+### Thematic Domain Pattern (Generic & Extensible)
+
+Rather than maintaining a rigid, closed catalog of allowed directories, the repository follows a generic domain convention:
+
+- **Domain Directory**: Group documentation by technical capability or subject area under `src/content/docs/<domain>/`.
+  - _Current Examples_: `containers/`, `linux/`, `tools/`, `security/`, `architecture/`, `meta/`.
+  - _Future Capabilities_: New capability domains (e.g. `networking/`, `storage/`, `observability/`, `ai/`) can be added freely as the engineering footprint expands.
+- **Multi-Archetype Coexistence**: A single domain may host multiple archetypes (for example, `linux/wireguard.md` is a `[Runbook]`, while `linux/user-permissions.md` is a `[Cheat Sheet]`).
+- **Navigation Registration**: Every page in a domain directory is assigned an archetype badge in [`astro.config.mjs`](astro.config.mjs).
+
+---
+
+## 🔗 The 3-Tier Synergy Linking Standard
+
+To eliminate content duplication and keep cheat sheets lean without stranding users, all pages adhere to a 3-tier cross-linking pattern:
+
+1. **Tier 1 — Top 1-Line Pivot Bar**:
+   Immediately beneath the frontmatter, provide a compact link row to counterpart guides for 0-second bounce recovery:
+
+   ```markdown
+   > 🔗 **Related**: [Runbook: Operational Setup](../path/to/runbook.md) · [Architecture: System Design](../path/to/architecture.md)
+   ```
+
+2. **Tier 2 — In-Body Collapsible Disclosures (`<details><summary>`)**:
+   Avoid bloating cheat sheets with extensive theory or verbose troubleshooting. Use native HTML `<details><summary>` disclosures or Starlight `collapse={...}` code blocks to make deep context available on-demand without slowing down visual scanning.
+
+3. **Tier 3 — Bottom Related Documentation Section**:
+   End every document with a standardized `## 🔗 Related Documentation & Context` heading. This automatically populates Starlight's right-hand **"On this page"** TOC on desktop.
 
 ---
 
@@ -55,6 +69,7 @@ description: "A single-sentence, search-optimized summary of what this document 
 ```
 
 ### Frontmatter Rules
+
 - **`title`**: Concise, capitalized, without markdown formatting or trailing punctuation.
 - **`description`**: Required for search indexing (Pagefind) and SEO meta tags. Must accurately describe the page content in 15–25 words.
 
@@ -63,6 +78,7 @@ description: "A single-sentence, search-optimized summary of what this document 
 ## 🎨 Content & Formatting Standards
 
 ### 1. Code Blocks & Syntax Highlighting
+
 - **Always specify language identifiers** (e.g. `bash`, `yaml`, `json`, `text`, `ini`).
 - **Include descriptive comments** above complex or multi-flag commands.
 - **Maintain empty lines** before and after all fenced code blocks (`MD031` compliance).
@@ -73,171 +89,48 @@ ss -tulpn | grep 51820
 ```
 
 ### 2. GitHub-Flavored Alerts & Callouts
+
 Use alerts to highlight critical operational context. Do not nest alerts or use them excessively:
 
-> [!NOTE]
-> Informational context, non-critical background, or helpful clarifications.
-
-> [!TIP]
-> High-value shortcuts, performance optimizations, or developer experience tips.
-
-> [!IMPORTANT]
-> Crucial instructions, required settings, or prerequisite configuration.
-
-> [!WARNING]
-> Deprecation notices, unexpected side effects, or configuration pitfalls.
-
-> [!CAUTION]
-> High-risk operational actions (data loss, network disconnects, firewall lockout).
+- `> [!NOTE]` — Informational context, non-critical background, or helpful clarifications.
+- `> [!TIP]` — High-value shortcuts, performance optimizations, or developer experience tips.
+- `> [!IMPORTANT]` — Crucial instructions, required settings, or prerequisite configuration.
+- `> [!WARNING]` — Deprecation notices, unexpected side effects, or configuration pitfalls.
+- `> [!CAUTION]` — High-risk operational actions (data loss, network disconnects, firewall lockout).
 
 ### 3. Tables for Scannability
+
 Tables are the preferred format for flags, parameters, and comparison data:
 
 ```markdown
-| Flag / Option | Default | Purpose |
-| :--- | :--- | :--- |
+| Flag / Option    | Default   | Purpose                              |
+| :--------------- | :-------- | :----------------------------------- |
 | `--bind-address` | `0.0.0.0` | Inbound IP address to bind listeners |
-| `--node-ip` | Required | Advertised node address within mesh |
+| `--node-ip`      | Required  | Advertised node address within mesh  |
 ```
 
 ---
 
 ## 📋 Page Templates
 
-Copy the relevant template from `.github/page-templates/` to start a new document:
+Instead of writing documents from scratch, copy the standardized template matching your Diátaxis archetype from [`.github/page-templates/`](https://github.com/bumuellp/bum-scrolling/tree/main/.github/page-templates):
 
-### Template 1: Reference / Cheat Sheet
-Use for CLI tools, flags, command catalogs, and syntax summaries.
+| Archetype            | Template File                                                                                                                           | Included Structural Blocks                                                                                                                                                                                                                                   | Quick Copy Command                                                                          |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| **`[Cheat Sheet]`**  | [`reference-cheatsheet.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/reference-cheatsheet.md)         | • 1-line top pivot bar<br>• Core command quickstart<br>• Command & flag matrix<br>• Common workflows with `<details>` deep-dives<br>• Gotcha alerts (`[!TIP]`, `[!WARNING]`)<br>• Bottom related links                                                       | `cp .github/page-templates/reference-cheatsheet.md src/content/docs/<domain>/<name>.md`     |
+| **`[Runbook]`**      | [`how-to-runbook.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/how-to-runbook.md)                     | • 1-line top pivot bar<br>• Prerequisites checklist<br>• Step-by-step procedures with alternative `<details>`<br>• Verification & health check commands<br>• Troubleshooting & incident remedies<br>• Security hardening checklist<br>• Bottom related links | `cp .github/page-templates/how-to-runbook.md src/content/docs/<domain>/<name>.md`           |
+| **`[Architecture]`** | [`architecture-explanation.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/architecture-explanation.md) | • 1-line top pivot bar<br>• ASCII / Mermaid topology diagram<br>• Component responsibility matrix<br>• Illustrative code & configuration schemas<br>• Architectural decisions & trade-offs (ADR-style)<br>• Ecosystem dependencies<br>• Bottom related links | `cp .github/page-templates/architecture-explanation.md src/content/docs/<domain>/<name>.md` |
 
-```markdown
----
-title: "[Tool Name] Cheat Sheet"
-description: "High-density command reference, common flags, and practical CLI patterns for [Tool]."
----
-
-[1-2 sentence overview defining the tool and primary entry point].
-
----
-
-## ⚡ Quick Start & Core Commands
+### Authoring Workflow with Templates
 
 ```bash
-# [Basic execution example]
-command --flag argument
-```
+# 1. Copy the appropriate template into your target domain folder
+cp .github/page-templates/reference-cheatsheet.md src/content/docs/tools/helm.md
 
----
-
-## 📊 Command & Flag Matrix
-
-| Command / Flag | Syntax | Purpose / When Useful |
-| :--- | :--- | :--- |
-| `[flag]` | `[example]` | [Description] |
-
----
-
-## 🛠️ Common Patterns & Workflows
-
-### 1. [Workflow Scenario Name]
-
-```bash
-# Step 1: [Short description]
-tool-cli command --param value
-```
-
----
-
-## ⚠️ Gotchas & Best Practices
-
-> [!TIP]
-> [High-value performance tip or shortcut]
-```
-
-### Template 2: Operational Runbook / How-To
-Use for infrastructure setups, service installations, and security hardening procedures.
-
-```markdown
----
-title: "[Procedure Name] Runbook"
-description: "Step-by-step operational runbook for configuring and maintaining [System/Service]."
----
-
-[1-2 sentences stating the operational goal].
-
----
-
-## 📋 Prerequisites & Requirements
-
-- [ ] Target OS: [e.g. Ubuntu 24.04 LTS]
-- [ ] Required packages: `[package-name]`
-- [ ] Network access / firewall requirements
-
----
-
-## 🚀 Step-by-Step Procedure
-
-### Step 1: [Preparation]
-```bash
-sudo apt-get update && sudo apt-get install -y [package]
-```
-
-### Step 2: [Configuration]
-```yaml
-# /path/to/config.yaml
-setting: enabled
-```
-
----
-
-## ✅ Verification & Health Checks
-
-```bash
-# Check service status
-sudo systemctl status [service].service --no-pager
-```
-
----
-
-## 🔍 Troubleshooting & Incident Response
-
-### Issue: [Symptom Name]
-- **Cause**: [Root cause explanation]
-- **Remedy**: [Actionable fix command]
-```
-
-### Template 3: Architecture / System Explanation
-Use for system design overviews, cross-repository tooling integrations, and architectural decisions.
-
-```markdown
----
-title: "[System Name] Architecture"
-description: "Design philosophy, component topology, and lifecycle workflows for [System]."
----
-
-[1-2 paragraphs introducing the subsystem and its design principles].
-
----
-
-## 🏛️ System Overview & High-Level Architecture
-
-[ASCII or Mermaid diagram depicting request lifecycle or topology].
-
----
-
-## 🧩 Core Components & Responsibilities
-
-| Component | Responsibility | Boundary / Interface |
-| :--- | :--- | :--- |
-| `[Component]` | [Primary function] | [API / IPC] |
-
----
-
-## ⚖️ Key Architectural Decisions & Trade-Offs
-
-### Decision 1: [Rationale for Technology Choice]
-- **Context**: [Problem description]
-- **Rationale**: [Why this pattern was chosen]
-- **Trade-Offs**: [Mitigations for downsides]
+# 2. Edit frontmatter, commands, and links
+# 3. Register your new page and its archetype badge in astro.config.mjs
+# 4. Verify locally
+npm run dev
 ```
 
 ---
@@ -245,6 +138,7 @@ description: "Design philosophy, component topology, and lifecycle workflows for
 ## 🔒 Privacy & Sanitization Guidelines
 
 As a public repository, all contributions must strictly preserve environmental privacy:
+
 - **No Private Repositories**: Use generic or public ecosystem references only.
 - **Sanitize IP Addresses**: Use documentation IP ranges (RFC 5737: `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24`) or standard private subnets (`10.0.0.0/8`, `192.168.0.0/16`).
 - **Generic Hostnames**: Use `example.com`, `node-1.internal`, or `cluster.local`.
@@ -257,14 +151,19 @@ As a public repository, all contributions must strictly preserve environmental p
 1. **Copy Template**: Choose from `.github/page-templates/` and place in the appropriate directory.
 2. **Register Route**: Add the page slug to [`astro.config.mjs`](astro.config.mjs) under the relevant sidebar group.
 3. **Run Pre-Commit Checks**:
+
    ```bash
    uvx pre-commit run --all-files
    ```
+
 4. **Build & Verify Locally**:
+
    ```bash
    npm run build
    ```
+
 5. **Commit with Conventional Commits**:
+
    ```bash
    git commit -m "feat(docs): add wireguard mesh routing runbook"
    ```
