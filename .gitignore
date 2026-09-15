@@ -13,6 +13,8 @@ pnpm-debug.log*
 .cache/
 .pre-commit/
 .agent/
+.agents/
+skills-lock.json
 
 # Environment and Secrets
 *.env
