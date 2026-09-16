@@ -23,7 +23,7 @@ Content is categorized along two orthogonal axes:
 
 ### Thematic Domain Organization (Generic)
 
-Directories under `src/content/docs/` correspond to technological capabilities (e.g. `containers/`, `linux/`, `tools/`, `security/`, `architecture/`). Contributors can introduce new capability areas (such as `networking/` or `observability/`) as the infrastructure evolves, registering them in [`astro.config.mjs`](astro.config.mjs).
+Directories under `src/content/docs/` correspond to technological capabilities (e.g. `containers/`, `linux/`, `tools/`, `security/`, `architecture/`, `ai/`). Contributors can introduce new capability areas (such as `networking/` or `observability/`) as the infrastructure evolves, registering them in [`astro.config.mjs`](astro.config.mjs).
 
 ---
 
@@ -66,7 +66,7 @@ This portal is built using [Astro Starlight](https://starlight.astro.build/).
 
 ### 1. Prerequisites
 
-- **Node.js**: v20 or v24 LTS (defined in `.node-version`)
+- **Node.js**: v24+ (defined in `.node-version` and `package.json` engines)
 - **Package Manager**: npm
 - **Python / UV**: For running `pre-commit` hooks locally
 

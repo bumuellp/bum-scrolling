@@ -51,11 +51,16 @@ services:
 
 If containers must be published to external clients and you need UFW to manage port access, use the `ufw-docker` utility to populate the `DOCKER-USER` chain.
 
-### 1. Install `ufw-docker`
+### 1. Install & Verify `ufw-docker`
 
 ```bash
+# Download pinned release script
 sudo wget -O /usr/local/bin/ufw-docker \
-  https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker
+  https://raw.githubusercontent.com/chaifeng/ufw-docker/020a8699f95592561f254d8d4ad1bb40d401dfc7/ufw-docker
+
+# Verify SHA256 checksum before granting execute permissions
+echo "643e56b080567c567b4aa28650196849b2a2da5dd0473fd3e5216b0886035ab0  /usr/local/bin/ufw-docker" | sha256sum --check
+
 sudo chmod +x /usr/local/bin/ufw-docker
 ```
 

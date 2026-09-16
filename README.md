@@ -19,7 +19,7 @@ Public knowledge base, engineering cheat-sheets, and developer tooling documenta
 
 ### Prerequisites
 
-- Node.js 22+
+- Node.js 24+ (defined in `.node-version`)
 - npm 10+
 
 ### Setup & Run

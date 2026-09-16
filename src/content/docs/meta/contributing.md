@@ -31,8 +31,8 @@ Content is categorized along two orthogonal axes:
 Rather than maintaining a rigid, closed catalog of allowed directories, the repository follows a generic domain convention:
 
 - **Domain Directory**: Group documentation by technical capability or subject area under `src/content/docs/<domain>/`.
-  - _Current Examples_: `containers/`, `linux/`, `tools/`, `security/`, `architecture/`, `meta/`.
-  - _Future Capabilities_: New capability domains (e.g. `networking/`, `storage/`, `observability/`, `ai/`) can be added freely as the engineering footprint expands.
+  - _Current Examples_: `containers/`, `linux/`, `tools/`, `security/`, `architecture/`, `ai/`, `meta/`.
+  - _Future Capabilities_: New capability domains (e.g. `networking/`, `storage/`, `observability/`) can be added freely as the engineering footprint expands.
 - **Multi-Archetype Coexistence**: A single domain may host multiple archetypes (for example, `linux/wireguard-routing-runbook.md` is a `[Runbook]`, while `linux/user-permissions-cheatsheet.md` is a `[Cheat Sheet]`).
 - **Navigation Registration**: Sidebar groups use dynamic directory autogeneration (`autogenerate`), with archetype badges and ordering declared directly in each page's YAML frontmatter.
 

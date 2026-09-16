@@ -7,6 +7,9 @@ name: CI
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   pre-commit:
     name: Pre-Commit & Automated Tests
@@ -16,4 +19,4 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Run Pre-Commit via Shared Action
-        uses: bumuellp/lights-camera-bum-action/pre-commit@main
+        uses: bumuellp/lights-camera-bum-action/pre-commit@ae01536f0debbf5f18a99887f55186df4b53b997

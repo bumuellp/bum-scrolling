@@ -28,7 +28,7 @@ npx skills add vercel-labs/agent-skills
 npx skills add bumuellp/00bum-licence-to-skill
 
 # 4. Install Anthropic's official skill-creator meta-skill
-npx skills add anthropics/skills@skill-creator
+npx skills add anthropics/skills --skill skill-creator
 
 # 5. List installed skills across project and global scopes
 npx skills list
@@ -55,10 +55,10 @@ The `skills` CLI installs skills across different AI agent runtimes using the `-
 npx skills add bumuellp/00bum-licence-to-skill --agent '*' --yes
 
 # Install specifically for Claude Code and Cursor
-npx skills add vercel-labs/agent-skills --agent claude-code cursor
+npx skills add vercel-labs/agent-skills --agent claude-code --agent cursor
 
 # Install globally for user profile across all projects
-npx skills add anthropics/skills@skill-creator --global --agent claude-code antigravity
+npx skills add anthropics/skills --skill skill-creator --global --agent claude-code --agent antigravity
 
 # Copy skill files directly instead of creating symlinks
 npx skills add bumuellp/00bum-licence-to-skill --copy --agent github-copilot

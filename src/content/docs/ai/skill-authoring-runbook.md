@@ -58,7 +58,7 @@ Anthropic provides an official meta-skill designed to draft, refine, and evaluat
 
 ```bash
 # Install skill-creator into your active agent environment
-npx skills add anthropics/skills@skill-creator --agent '*' --yes
+npx skills add anthropics/skills --skill skill-creator --agent '*' --yes
 ```
 
 Prompt your AI coding assistant to design the skill specification:
