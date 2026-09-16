@@ -1,15 +1,35 @@
 ---
 title: "[Topic / Tool Name] Cheat Sheet"
 description: "High-density command reference, common flags, and practical CLI patterns for [Tool / Technology]."
+sidebar:
+  label: "[Short Title]"
+  order: 10
+  badge:
+    text: "Cheat Sheet"
+    variant: "note"
 ---
 
 <!--
-DIÁTAXIS ARCHETYPE: REFERENCE
+DIÁTAXIS ARCHETYPE: REFERENCE / CHEAT SHEET
 Target Audience: Practitioners who already know what they want to achieve and need instant syntax, flags, or configuration keys.
 Tone: Objective, concise, tabular, low-narrative.
+Filename Convention: <topic>-cheatsheet.md
+
+CORE CONTRACT:
+1. Frontmatter with descriptive title, 15 to 25 word description, and sidebar badge (text: "Cheat Sheet", variant: "note").
+2. Tier 1 Top Pivot Bar immediately beneath frontmatter.
+3. Tier 3 Related Documentation section at the bottom (## 🔗 Related Documentation & Context).
+
+SUGGESTED MODULAR BODY BLOCKS (All Optional / Advisory):
+The sections below are recommended patterns, not rigid requirements. Adapt, reorder, combine, or omit headings based on what best serves the topic.
+- Quick start / one-liner examples
+- Command / parameter / flag matrix tables
+- Scoped workflow patterns with <details> for advanced nuances
+- Configuration snippets (only when tool uses config files)
+- Gotchas, pitfalls, and performance tips ([!TIP], [!WARNING])
 -->
 
-> 🔗 **Related**: [Runbook: Operational Setup](../path/to/runbook.md) · [Architecture: System Design](../path/to/architecture.md)
+> 🔗 **Related**: [Runbook: Operational Setup](../path/to/procedure-runbook.md) · [Architecture: System Design](../path/to/system-explanation.md)
 
 [1-2 sentence overview defining the tool, primary scope, and binary/CLI entry point].
 
@@ -18,10 +38,10 @@ Tone: Objective, concise, tabular, low-narrative.
 ## ⚡ Quick Start & Core Commands
 
 ```bash
-# [Basic execution example]
+# Basic execution example
 command --flag argument
 
-# [Second most common workflow]
+# Second common workflow
 command sub-action --target value
 ```
 
@@ -33,7 +53,6 @@ command sub-action --target value
 | :------------- | :---------- | :---------------------------------- |
 | `[flag/cmd]`   | `[example]` | [Concise description of the option] |
 | `[flag/cmd]`   | `[example]` | [Concise description of the option] |
-| `[flag/cmd]`   | `[example]` | [Concise description of the option] |
 
 ---
 
@@ -42,10 +61,10 @@ command sub-action --target value
 ### 1. [Workflow Scenario Name]
 
 ```bash
-# Step 1: [Short description]
+# Step 1: Description
 tool-cli command --param value
 
-# Step 2: [Short description]
+# Step 2: Verification
 tool-cli verify --output json
 ```
 
@@ -54,28 +73,7 @@ tool-cli verify --output json
 
 Use collapsible blocks for background details, theory, or advanced edge-case parameters so the main table remains fast and scannable without bloat.
 
-- **Option A**: [Context]
-- **Option B**: [Context]
-
 </details>
-
-### 2. [Workflow Scenario Name]
-
-```bash
-# [Targeted command with context]
-tool-cli sync --dry-run
-```
-
----
-
-## ⚙️ Configuration Snippets
-
-```yaml
-# Example configuration snippet: /etc/tool/config.yaml
-setting:
-  enabled: true
-  threshold: 10
-```
 
 ---
 
@@ -93,5 +91,5 @@ Pay careful attention to destructive operations:
 
 ## 🔗 Related Documentation & Context
 
-- **Runbook**: [Step-by-Step Setup & Hardening](../path/to/runbook.md) — Complete operational guide for deploying and maintaining this service.
-- **Architecture**: [System Design & Rationale](../path/to/architecture.md) — Topology diagrams, decision records, and component responsibilities.
+- **Runbook**: [Step-by-Step Setup & Hardening](../path/to/procedure-runbook.md): Complete operational guide for deploying and maintaining this service.
+- **Architecture**: [System Design & Rationale](../path/to/system-explanation.md): Topology diagrams, decision records, and component responsibilities.

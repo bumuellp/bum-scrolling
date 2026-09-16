@@ -1,9 +1,17 @@
 ---
-title: Actions Suite (lights-camera-bum-action)
-description: Reusable GitHub Actions and workflows for automated CI/CD and release pipelines.
+title: Actions Suite Architecture (lights-camera-bum-action)
+description: Architectural overview of modular composite GitHub Actions and reusable workflows for automated container builds, SemVer bumping, and image retention.
+sidebar:
+  label: "Actions Suite (lights-camera-bum-action)"
+  order: 30
+  badge:
+    text: "Architecture"
+    variant: "tip"
 ---
 
-[**`lights-camera-bum-action`**](https://github.com/bumuellp/lights-camera-bum-action) is a modular suite of 9 composite GitHub Actions and reusable workflows designed for container builds, automated SemVer calculation, package retention, and deployment automation.
+> 🔗 **Related**: [Architecture: Tooling Ecosystem](./ecosystem-explanation.md) · [Cheat Sheet: GitHub Actions CI/CD](../tools/github-actions-cheatsheet.md) · [Architecture: Git Hooks (cabumtain-hook)](./cabumtain-hook-explanation.md)
+
+[lights-camera-bum-action](https://github.com/bumuellp/lights-camera-bum-action) provides 9 modular composite GitHub Actions and reusable workflows designed for container builds, automated SemVer calculation, package retention, and deployment automation.
 
 ---
 
@@ -16,8 +24,8 @@ description: Reusable GitHub Actions and workflows for automated CI/CD and relea
 | **[`bump-version`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/bump-version)**                           | Automated SemVer release calculator based on Conventional Commits.                   | `force-bump`                                 |
 | **[`cleanup-ghcr-packages`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/cleanup-ghcr-packages)**         | Automated GHCR image retention policy preserving releases and pruning stale SHAs.    | `package-names`, `keep-sha-count`            |
 | **[`plan-image-builds`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/plan-image-builds)**                 | Smart build matrix planner with git diffs and UI dispatch checkboxes.                | `images`, `target`                           |
-| **[`free-disk-space`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/free-disk-space)**                     | Frees 20GB+ disk space on Ubuntu runners by safely removing unused SDKs.             | —                                            |
-| **[`cleanup-docker`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/cleanup-docker)**                       | Post-test teardown displaying compose logs on failure and stopping containers.       | —                                            |
+| **[`free-disk-space`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/free-disk-space)**                     | Frees 20GB+ disk space on Ubuntu runners by safely removing unused SDKs.             | None                                         |
+| **[`cleanup-docker`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/cleanup-docker)**                       | Post-test teardown displaying compose logs on failure and stopping containers.       | None                                         |
 | **[`run-authorized-ssh-script`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/run-authorized-ssh-script)** | Execute deployment scripts on remote hosts over SSH with piped environment payloads. | `ssh-user`, `ssh-host`, `remote-command`     |
 | **[`sync-rsync-path`](https://github.com/bumuellp/lights-camera-bum-action/tree/main/sync-rsync-path)**                     | Synchronize local files and artifacts to remote hosts over SSH using `rsync`.        | `local-path`, `remote-directory`             |
 
@@ -25,5 +33,14 @@ description: Reusable GitHub Actions and workflows for automated CI/CD and relea
 
 ## 🧪 Testing Pyramid Implementation
 
-1. **Unit Testing (`pytest`)**: 40 unit tests in `tests/` validating argument building, subprocess execution, whitespace handling, and failure modes.
+1. **Unit Testing (`pytest`)**: 40 unit tests in `tests/` validating argument construction, subprocess execution, whitespace handling, and failure modes.
 2. **Integration Testing (`act`)**: `.github/workflows/integration-tests.yml` exercises every composite action with positive and negative test cases, runnable locally with `act` or in CI on PRs.
+
+---
+
+## 🔗 Related Documentation & Context
+
+- [Architecture: Tooling Ecosystem](./ecosystem-explanation.md)
+- [Cheat Sheet: GitHub Actions CI/CD](../tools/github-actions-cheatsheet.md)
+- [Architecture: Git Hooks (cabumtain-hook)](./cabumtain-hook-explanation.md)
+- [Architecture: Container Images (bum-in-a-box)](./bum-in-a-box-explanation.md)

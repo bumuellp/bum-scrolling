@@ -1,9 +1,17 @@
 ---
-title: Git Hooks (cabumtain-hook)
-description: Modular pre-commit and pre-push hook collection for security, linting, and tag protection.
+title: Git Hooks Architecture (cabumtain-hook)
+description: Modular pre-commit, commit-msg, and pre-push hook architecture for shift-left security, linting, and release tag immutability.
+sidebar:
+  label: "Git Hooks (cabumtain-hook)"
+  order: 40
+  badge:
+    text: "Architecture"
+    variant: "tip"
 ---
 
-[**`cabumtain-hook`**](https://github.com/bumuellp/cabumtain-hook) is a modular Git hook collection that enforces quality gates on developer workstations prior to pushing code to GitHub.
+> 🔗 **Related**: [Architecture: Tooling Ecosystem](./ecosystem-explanation.md) · [Cheat Sheet: Pre-Commit Framework](../tools/pre-commit-cheatsheet.md) · [Cheat Sheet: Curated Pre-Commit Hooks](../tools/pre-commit-hooks-cheatsheet.md)
+
+[cabumtain-hook](https://github.com/bumuellp/cabumtain-hook) is a modular Git hook suite that enforces quality gates on developer workstations prior to pushing code to GitHub.
 
 ---
 
@@ -11,7 +19,7 @@ description: Modular pre-commit and pre-push hook collection for security, linti
 
 | Hook ID                      | Stage                | Description                                                                                      |
 | :--------------------------- | :------------------- | :----------------------------------------------------------------------------------------------- |
-| **`commit-msg`**             | `commit-msg`         | Enforces Conventional Commit format (`feat`, `fix`, `docs`, etc.) with subject <= 72 characters. |
+| **`commit-msg`**             | `commit-msg`         | Enforces Conventional Commit syntax (`feat`, `fix`, `docs`, etc.) with subject <= 72 characters. |
 | **`tag-immutability-guard`** | `pre-push`           | Prevents mutating, moving, or force-deleting existing SemVer release tags (`v*.*.*`) on remote.  |
 | **`act-integration-test`**   | `pre-push`, `manual` | Executes local GitHub Actions workflow integration tests with native `act` before push.          |
 | **`secret-scan`**            | `commit`             | Scans staged files and history for high-entropy secrets and tokens using TruffleHog.             |
@@ -41,3 +49,12 @@ repos:
       - id: tag-immutability-guard
       - id: act-integration-test
 ```
+
+---
+
+## 🔗 Related Documentation & Context
+
+- [Architecture: Tooling Ecosystem](./ecosystem-explanation.md)
+- [Cheat Sheet: Pre-Commit Framework](../tools/pre-commit-cheatsheet.md)
+- [Cheat Sheet: Curated Pre-Commit Hooks](../tools/pre-commit-hooks-cheatsheet.md)
+- [Runbook: Semantic Versioning & Release Tagging](../tools/git-release-runbook.md)

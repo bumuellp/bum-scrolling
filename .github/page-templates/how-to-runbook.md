@@ -1,15 +1,35 @@
 ---
 title: "[Operation / Procedure Name] Runbook"
 description: "Step-by-step operational runbook for configuring, securing, and maintaining [System / Service]."
+sidebar:
+  label: "[Short Title]"
+  order: 10
+  badge:
+    text: "Runbook"
+    variant: "success"
 ---
 
 <!--
 DIÁTAXIS ARCHETYPE: HOW-TO GUIDE / RUNBOOK
 Target Audience: Practitioners executing a concrete operational task or solving a specific production problem.
 Tone: Prescriptive, sequential, action-driven, outcome-focused.
+Filename Convention: <topic>-runbook.md
+
+CORE CONTRACT:
+1. Frontmatter with descriptive title, 15 to 25 word description, and sidebar badge (text: "Runbook", variant: "success").
+2. Tier 1 Top Pivot Bar immediately beneath frontmatter.
+3. Tier 3 Related Documentation section at the bottom (## 🔗 Related Documentation & Context).
+
+SUGGESTED MODULAR BODY BLOCKS (All Optional / Advisory):
+The sections below are recommended patterns, not rigid requirements. Adapt, reorder, combine, or omit headings based on what best serves the operation.
+- Prerequisites & requirements checklist
+- Step-by-step procedure (with <details> for advanced or alternative paths)
+- Verification & health check commands
+- Structured troubleshooting & common failure modes (Issue / Cause / Remedy)
+- Security hardening checklist
 -->
 
-> 🔗 **Related**: [Cheat Sheet: Quick Reference](../path/to/cheatsheet.md) · [Architecture: System Topology](../path/to/architecture.md)
+> 🔗 **Related**: [Cheat Sheet: Quick Reference](../path/to/tool-cheatsheet.md) · [Architecture: System Topology](../path/to/system-explanation.md)
 
 [1-2 sentences stating exactly what operational goal this runbook accomplishes and the target environment].
 
@@ -46,8 +66,6 @@ Create or edit the configuration file at `[path/to/config]`:
 service:
   interface: "0.0.0.0"
   port: 8080
-  logging:
-    level: "info"
 ```
 
 <details>
@@ -84,9 +102,6 @@ sudo systemctl status [service-name].service --no-pager
 
 # 2. Check active network listeners
 ss -tulpn | grep [port]
-
-# 3. Test connectivity or ping check
-curl -fsSL http://localhost:8080/healthz
 ```
 
 ---
@@ -104,15 +119,6 @@ curl -fsSL http://localhost:8080/healthz
   sudo lsof -i :8080
   ```
 
-#### Issue: [Symptom Name, e.g. Permission Denied]
-
-- **Cause**: [Root cause explanation, e.g. SELinux context or file ownership mismatch].
-- **Remedy**:
-
-  ```bash
-  sudo chown -R service-user:service-group /var/lib/service
-  ```
-
 ---
 
 ## 🛡️ Security Hardening Checklist
@@ -126,5 +132,5 @@ curl -fsSL http://localhost:8080/healthz
 
 ## 🔗 Related Documentation & Context
 
-- **Cheat Sheet**: [CLI Command Reference](../path/to/cheatsheet.md) — Rapid lookups for flags and everyday commands.
-- **Architecture**: [Topology & Rationale](../path/to/architecture.md) — System models, failure modes, and architectural trade-offs.
+- **Cheat Sheet**: [CLI Command Reference](../path/to/tool-cheatsheet.md): Rapid lookups for flags and everyday commands.
+- **Architecture**: [Topology & Rationale](../path/to/system-explanation.md): System models, failure modes, and architectural trade-offs.

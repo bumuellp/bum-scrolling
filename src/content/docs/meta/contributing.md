@@ -33,8 +33,8 @@ Rather than maintaining a rigid, closed catalog of allowed directories, the repo
 - **Domain Directory**: Group documentation by technical capability or subject area under `src/content/docs/<domain>/`.
   - _Current Examples_: `containers/`, `linux/`, `tools/`, `security/`, `architecture/`, `meta/`.
   - _Future Capabilities_: New capability domains (e.g. `networking/`, `storage/`, `observability/`, `ai/`) can be added freely as the engineering footprint expands.
-- **Multi-Archetype Coexistence**: A single domain may host multiple archetypes (for example, `linux/wireguard.md` is a `[Runbook]`, while `linux/user-permissions.md` is a `[Cheat Sheet]`).
-- **Navigation Registration**: Every page in a domain directory is assigned an archetype badge in [`astro.config.mjs`](astro.config.mjs).
+- **Multi-Archetype Coexistence**: A single domain may host multiple archetypes (for example, `linux/wireguard-routing-runbook.md` is a `[Runbook]`, while `linux/user-permissions-cheatsheet.md` is a `[Cheat Sheet]`).
+- **Navigation Registration**: Sidebar groups use dynamic directory autogeneration (`autogenerate`), with archetype badges and ordering declared directly in each page's YAML frontmatter.
 
 ---
 
@@ -115,21 +115,20 @@ Tables are the preferred format for flags, parameters, and comparison data:
 
 Instead of writing documents from scratch, copy the standardized template matching your Diátaxis archetype from [`.github/page-templates/`](https://github.com/bumuellp/bum-scrolling/tree/main/.github/page-templates):
 
-| Archetype            | Template File                                                                                                                           | Included Structural Blocks                                                                                                                                                                                                                                   | Quick Copy Command                                                                          |
-| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
-| **`[Cheat Sheet]`**  | [`reference-cheatsheet.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/reference-cheatsheet.md)         | • 1-line top pivot bar<br>• Core command quickstart<br>• Command & flag matrix<br>• Common workflows with `<details>` deep-dives<br>• Gotcha alerts (`[!TIP]`, `[!WARNING]`)<br>• Bottom related links                                                       | `cp .github/page-templates/reference-cheatsheet.md src/content/docs/<domain>/<name>.md`     |
-| **`[Runbook]`**      | [`how-to-runbook.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/how-to-runbook.md)                     | • 1-line top pivot bar<br>• Prerequisites checklist<br>• Step-by-step procedures with alternative `<details>`<br>• Verification & health check commands<br>• Troubleshooting & incident remedies<br>• Security hardening checklist<br>• Bottom related links | `cp .github/page-templates/how-to-runbook.md src/content/docs/<domain>/<name>.md`           |
-| **`[Architecture]`** | [`architecture-explanation.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/architecture-explanation.md) | • 1-line top pivot bar<br>• ASCII / Mermaid topology diagram<br>• Component responsibility matrix<br>• Illustrative code & configuration schemas<br>• Architectural decisions & trade-offs (ADR-style)<br>• Ecosystem dependencies<br>• Bottom related links | `cp .github/page-templates/architecture-explanation.md src/content/docs/<domain>/<name>.md` |
+| Archetype            | Template File                                                                                                                           | Included Structural Blocks                                                                                                                                                                                                                                   | Quick Copy Command                                                                                      |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
+| **`[Cheat Sheet]`**  | [`reference-cheatsheet.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/reference-cheatsheet.md)         | • 1-line top pivot bar<br>• Core command quickstart<br>• Command & flag matrix<br>• Common workflows with `<details>` deep-dives<br>• Gotcha alerts (`[!TIP]`, `[!WARNING]`)<br>• Bottom related links                                                       | `cp .github/page-templates/reference-cheatsheet.md src/content/docs/<domain>/<name>-cheatsheet.md`      |
+| **`[Runbook]`**      | [`how-to-runbook.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/how-to-runbook.md)                     | • 1-line top pivot bar<br>• Prerequisites checklist<br>• Step-by-step procedures with alternative `<details>`<br>• Verification & health check commands<br>• Troubleshooting & incident remedies<br>• Security hardening checklist<br>• Bottom related links | `cp .github/page-templates/how-to-runbook.md src/content/docs/<domain>/<name>-runbook.md`               |
+| **`[Architecture]`** | [`architecture-explanation.md`](https://github.com/bumuellp/bum-scrolling/blob/main/.github/page-templates/architecture-explanation.md) | • 1-line top pivot bar<br>• ASCII / Mermaid topology diagram<br>• Component responsibility matrix<br>• Illustrative code & configuration schemas<br>• Architectural decisions & trade-offs (ADR-style)<br>• Ecosystem dependencies<br>• Bottom related links | `cp .github/page-templates/architecture-explanation.md src/content/docs/<domain>/<name>-explanation.md` |
 
 ### Authoring Workflow with Templates
 
 ```bash
-# 1. Copy the appropriate template into your target domain folder
-cp .github/page-templates/reference-cheatsheet.md src/content/docs/tools/helm.md
+# 1. Copy the appropriate template into your target domain folder with the required suffix
+cp .github/page-templates/reference-cheatsheet.md src/content/docs/tools/helm-cheatsheet.md
 
-# 2. Edit frontmatter, commands, and links
-# 3. Register your new page and its archetype badge in astro.config.mjs
-# 4. Verify locally
+# 2. Configure frontmatter (title, description, sidebar.label, sidebar.order, and sidebar.badge)
+# 3. Verify locally (Starlight automatically discovers the page from the directory)
 npm run dev
 ```
 
@@ -148,8 +147,8 @@ As a public repository, all contributions must strictly preserve environmental p
 
 ## 🚀 Authoring Workflow & Pull Request Checklist
 
-1. **Copy Template**: Choose from `.github/page-templates/` and place in the appropriate directory.
-2. **Register Route**: Add the page slug to [`astro.config.mjs`](astro.config.mjs) under the relevant sidebar group.
+1. **Copy Template**: Choose from `.github/page-templates/` and place in the appropriate domain directory with its required suffix (`-cheatsheet.md`, `-runbook.md`, `-explanation.md`).
+2. **Configure Frontmatter**: Set `title`, `description`, and `sidebar` (`label`, `order`, `badge.text`, `badge.variant`). Starlight automatically discovers pages via directory autogeneration.
 3. **Run Pre-Commit Checks**:
 
    ```bash
