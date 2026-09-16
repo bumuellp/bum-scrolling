@@ -18,7 +18,7 @@ concurrency:
 jobs:
   deploy-pages:
     name: Deploy
-    uses: bumuellp/lights-camera-bum-action/.github/workflows/deploy-pages.yml@ae01536f0debbf5f18a99887f55186df4b53b997
+    uses: bumuellp/lights-camera-bum-action/.github/workflows/deploy-pages.yml@0d93c673fba580fb1da0442bef564e423ab7ae0b
     with:
       build-command: "npm run build"
       dist-path: "./dist"
