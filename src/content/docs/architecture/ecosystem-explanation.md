@@ -26,13 +26,15 @@ graph LR
 
 ---
 
-## 🏗️ The Repository Triad
+## 🏗️ The Repository Ecosystem
 
-| Repository                              | Responsibility                                                                                                                        | Canonical Resource                                                                      |
-| :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------- |
-| **`bumuellp/cabumtain-hook`**           | Modular Git hooks: Conventional Commits, Tag Immutability, local `act` integration testing, Trivy security scans.                     | [cabumtain-hook GitHub](https://github.com/bumuellp/cabumtain-hook)                     |
-| **`bumuellp/lights-camera-bum-action`** | 9 reusable GitHub Actions: containerized `pre-commit`, SemVer `bump-version`, GHCR retention `cleanup-ghcr-packages`, Buildx builder. | [lights-camera-bum-action GitHub](https://github.com/bumuellp/lights-camera-bum-action) |
-| **`bumuellp/bum-in-a-box`**             | Curated container images: `lint-tools`, `llama-proxy` (Vulkan + ktransforms), `mcpo`, `openclaw`, `vibe-trading`.                     | [bum-in-a-box GitHub](https://github.com/bumuellp/bum-in-a-box)                         |
+| Repository                              | Responsibility                                                                                                     | Canonical Resource                                                                      |
+| :-------------------------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
+| **`bumuellp/cabumtain-hook`**           | Modular Git hooks: Conventional Commits, Tag Immutability, `tofu-fmt`, secret scanning.                            | [cabumtain-hook GitHub](https://github.com/bumuellp/cabumtain-hook)                     |
+| **`bumuellp/lights-camera-bum-action`** | 11 reusable GitHub Actions: containerized `pre-commit`, `sync-dns-record`, `decrypt-sops`, SemVer `bump-version`.  | [lights-camera-bum-action GitHub](https://github.com/bumuellp/lights-camera-bum-action) |
+| **`bumuellp/bum-in-a-box`**             | Curated container images: `lint-tools` (with OpenTofu 1.13.1), `llama-proxy`, `mcpo`, `openclaw`, `vibe-trading`.  | [bum-in-a-box GitHub](https://github.com/bumuellp/bum-in-a-box)                         |
+| **`bumuellp/tofu-bum`**                 | Generic, reusable OpenTofu infrastructure modules for Hetzner Cloud (ephemeral compute, volumes, firewalls).       | [tofu-bum GitHub](https://github.com/bumuellp/tofu-bum)                                 |
+| **`bumuellp/mine-your-own-bum`**        | Public template repository for on-demand Minecraft crossplay servers with automatic idle shutdown and dynamic DNS. | [mine-your-own-bum GitHub](https://github.com/bumuellp/mine-your-own-bum)               |
 
 ---
 
