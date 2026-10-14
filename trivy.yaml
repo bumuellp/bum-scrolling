@@ -1,0 +1,14 @@
+---
+severity:
+  - HIGH
+  - CRITICAL
+
+scan:
+  scanners:
+    - vuln
+    - secret
+    - license
+  skip-dirs:
+    - node_modules
+
+ignore-policy: .trivyignore.rego
