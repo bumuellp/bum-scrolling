@@ -24,5 +24,9 @@
     "prettier": "3.9.6",
     "sharp": "0.35.5",
     "typescript": "6.0.3"
+  },
+  "overrides": {
+    "katex": "^0.18.2",
+    "postcss-selector-parser": "^7.1.6"
   }
 }
