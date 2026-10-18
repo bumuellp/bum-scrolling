@@ -7,16 +7,6 @@ name: CI
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read
-
 jobs:
-  pre-commit:
-    name: Pre-Commit & Automated Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - name: Run Pre-Commit via Shared Action
-        uses: bumuellp/lights-camera-bum-action/pre-commit@ae01536f0debbf5f18a99887f55186df4b53b997
+  ci:
+    uses: bumuellp/lights-camera-bum-action/.github/workflows/ci.yml@da9a4f175c5849ed3b16e8c28523c1b84e8cec63 # v1.8.0
