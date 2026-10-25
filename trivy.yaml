@@ -1,14 +1,22 @@
 ---
-severity:
-  - HIGH
-  - CRITICAL
+# Trivy Configuration File (trivy.yaml)
+# Documentation: https://aquasecurity.github.io/trivy/latest/docs/references/configuration/cli/
 
-scan:
-  scanners:
+# Minimum severity levels to report
+severity:
+    - CRITICAL
+    - HIGH
+
+# Scanners to run during filesystem scans
+scanners:
     - vuln
+    - misconfig
     - secret
     - license
-  skip-dirs:
-    - node_modules
 
-ignore-policy: .trivyignore.rego
+# Ignorefile path
+vulnerability:
+    ignorefile: .trivyignore
+
+# Default exit code (0 = non-blocking report)
+exit-code: 0
