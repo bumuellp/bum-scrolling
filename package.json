@@ -14,19 +14,19 @@
     "node": ">=24.0.0"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.42.6",
-    "astro": "^7.3.2",
-    "astro-mermaid": "^2.1.0",
+    "@astrojs/starlight": "^0.42.8",
+    "astro": "^7.4.3",
+    "astro-mermaid": "^2.2.0",
     "mermaid": "^10.8.0"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
+    "@astrojs/check": "0.9.12",
     "prettier": "3.9.10",
     "sharp": "0.35.5",
     "typescript": "6.0.3"
   },
   "overrides": {
-    "katex": "^0.19.0",
-    "postcss-selector-parser": "^7.1.6"
+    "katex": "^0.19.1",
+    "postcss-selector-parser": "^7.1.7"
   }
 }
